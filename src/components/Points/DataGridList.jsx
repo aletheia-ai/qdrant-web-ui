@@ -18,17 +18,6 @@ export const DataGridList = function ({ data = {}, specialCases = {}, onConditio
   const theme = useTheme();
   const specialKeys = Object.keys(specialCases) || [];
 
-  const handleClick = (base64Image,key) => {
-    if(key !=="image"){
-     return;
-    }
-     const newWindow = window.open('', '_blank');
-     if (newWindow) {
-         newWindow.document.write(`<img src="${base64Image}" alt="Base64 Image" />`);
-         newWindow.document.title = "Base64 Image";
-     }
-  };
-
   return Object.keys(data).map((key) => {
     return (
       <div key={key}>
@@ -73,14 +62,10 @@ export const DataGridList = function ({ data = {}, specialCases = {}, onConditio
 
               {/* other types of values */}
               {typeof data[key] !== 'object' && !specialKeys.includes(key) && (
-                <span onClick={()=>handleClick(data[key].toString(),key)} style={{cursor:"pointer", 
-                  whiteSpace: "nowrap",         
-                  overFlow: "hidden",          
-                  textOverflow: "ellipsis",     
-                  width: "200px",                
-                  display: "inline-block"       
-                  }}>
-                  {'\t'} {data[key].toString()}
+                <span>
+                  {'\t'} {key==="image"?(
+                    <img src={data[key].toString()} alt="Base64 Image" style={{width:"112px",height:"112px"}}/>
+                  ): data[key].toString()}
                 </span>
               )}
               {payloadSchema &&
